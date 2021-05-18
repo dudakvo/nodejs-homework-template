@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   validateCreateContact,
   validateUpdateContact,
+  validateUpdateFavorite,
 } = require("./validation.js");
 
 router.get("/", async (req, res, next) => {
@@ -80,8 +81,6 @@ router.delete("/:contactId", async (req, res, next) => {
 
 router.patch("/:contactId", validateUpdateContact, async (req, res, next) => {
   try {
-    const numberId = req.params.contactId;
-    console.log(numberId);
     const contactUpdated = await Contacts.updateContact(
       req.params.contactId,
       req.body
@@ -103,5 +102,33 @@ router.patch("/:contactId", validateUpdateContact, async (req, res, next) => {
     next(error.message);
   }
 });
+
+router.patch(
+  "/:contactId/favorite",
+  validateUpdateFavorite,
+  async (req, res, next) => {
+    try {
+      if (req.body.favorite) {
+        const result = await Contacts.updateStatusContact(
+          req.params.contactId,
+          req.body
+        );
+        res.status(200).json({
+          status: "success",
+          code: 200,
+          data: result,
+        });
+        return result;
+      }
+      return res.status(404).json({
+        status: "error",
+        code: 404,
+        massage: "missing field favorite",
+      });
+    } catch (error) {
+      next(error.message);
+    }
+  }
+);
 
 module.exports = router;

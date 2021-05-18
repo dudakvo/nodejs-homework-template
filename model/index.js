@@ -44,10 +44,24 @@ const updateContact = async (id, body) => {
   }
 };
 
+const updateStatusContact = async (id, body) => {
+  try {
+    const result = await Contact.findOneAndUpdate(
+      { _id: id },
+      { ...body },
+      { new: true }
+    );
+    return result;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   listContacts,
   getContactById,
   removeContact,
   addContact,
   updateContact,
+  updateStatusContact,
 };

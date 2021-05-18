@@ -20,7 +20,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
   try {
-    const contact = await Contacts.getContactById(Number(req.params.id));
+    const contact = await Contacts.getContactById(req.params.id);
     if (contact) {
       return res.status(200).json({
         status: "success",
@@ -60,7 +60,7 @@ router.post("/", validateCreateContact, async (req, res, next) => {
 
 router.delete("/:contactId", async (req, res, next) => {
   try {
-    const contact = await Contacts.removeContact(Number(req.params.contactId));
+    const contact = await Contacts.removeContact(req.params.contactId);
     if (contact) {
       return res.status(200).json({
         status: "success",

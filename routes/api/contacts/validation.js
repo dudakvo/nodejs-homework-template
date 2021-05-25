@@ -31,7 +31,6 @@ const validateUpdateContact = (req, _res, next) =>
   validate(schemaUpdateContact, req.body, next);
 
 const validateUpdateFavorite = (req, _res, next) => {
-  console.log(`update favorite validate`);
   validate(schemaUpdateFavorite, req.body, next);
 };
 

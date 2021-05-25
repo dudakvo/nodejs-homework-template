@@ -2,10 +2,12 @@ const Contacts = require("../model/contacts");
 
 const getContacts = async (req, res, next) => {
   try {
+    console.log(` get all contact ${req.user}`);
+    const contactsArray = await Contacts.listContacts();
     return res.json({
       status: "success",
       code: 200,
-      data: await Contacts.listContacts(),
+      data: contactsArray,
     });
   } catch (error) {
     next(error.message);

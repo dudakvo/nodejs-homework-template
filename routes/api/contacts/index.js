@@ -11,7 +11,7 @@ const {
 
 router.get("/", guard, ctrl.getContacts);
 
-router.get("/:id", guard, guard, ctrl.getContactByID);
+router.get("/:id", guard, ctrl.getContactByID);
 
 router.post("/", guard, validateCreateContact, ctrl.addContact);
 

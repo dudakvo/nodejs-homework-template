@@ -9,7 +9,9 @@ const create = async (option) => {
   return await user.save();
 };
 
-const updateToken = async (id, token) =>
+const updateToken = async (id, token) => {
+  console.log(`id= ${id} token=${token}`);
   await User.updateOne({ _id: id }, { token });
+};
 
 module.exports = { findByID, findByEmail, create, updateToken };

@@ -4,12 +4,14 @@ const schemaCreateContact = Joi.object({
   name: Joi.string().min(4).max(30).required(),
   email: Joi.string().email({ multiple: false }).required(),
   phone: Joi.string().min(6).max(30).required(),
+  owner: Joi.string(),
 });
 
 const schemaUpdateContact = Joi.object({
   name: Joi.string().min(4).max(30).optional(),
   emil: Joi.string().email({ multiple: false }).optional(),
   phone: Joi.string().min(6).max(30).optional(),
+  owner: Joi.string().optional(),
 });
 
 const schemaUpdateFavorite = Joi.object({ favorite: Joi.boolean() });

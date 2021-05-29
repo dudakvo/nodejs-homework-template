@@ -18,13 +18,9 @@ const guard = (req, res, next) => {
       });
     }
     req.user = user;
-    console.log(
-      "🚀 ~ file: guards.js ~ line 21 ~ passport.authenticate ~ req.user",
-      req.user
-    );
+
     return next();
   })(req, res, next);
-  next();
 };
 
 module.exports = guard;

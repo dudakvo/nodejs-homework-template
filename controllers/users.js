@@ -53,6 +53,28 @@ const login = async (req, res, next) => {
   }
 };
 
-const logout = async (req, res, next) => {};
+const logout = async (req, res, next) => {
+  const userID = req.user.id;
+  try {
+    await Users.updateToken(userID, null);
+    return res.status(HttpCode.NO_CONTENT).json({});
+  } catch (error) {
+    next(error);
+  }
+};
 
-module.exports = { reg, login, logout };
+const current = async (req, res, next) => {
+  const userID = req.user.id;
+  const { email, subscription } = await Users.findByID(userID);
+  try {
+    return res.status(HttpCode.OK).json({
+      status: "success",
+      code: HttpCode.OK,
+      data: { email, subscription },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { reg, login, logout, current };

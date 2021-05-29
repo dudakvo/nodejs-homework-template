@@ -23,7 +23,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   const code = err.status || 500;
   const status = err.status ? "error" : "fail";
-  res.status(code).json({ status, code, message: err.message });
+  res.status(code).json({ status, code, message: err });
 });
 
 module.exports = app;

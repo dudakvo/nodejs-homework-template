@@ -1,9 +1,15 @@
 const Contact = require("./schemas/contact");
 
-const listContacts = async (userID) => {
+const listContacts = async (userID, query) => {
+  const { limit = 5, page = 1 } = query;
+  const optionSearch = { owner: userID };
   try {
     console.log(`list contacts user ID = ${userID}`);
-    return await Contact.find({ owner: userID });
+    const { docs: contacts, totalDocs: total } = await Contact.paginate(
+      optionSearch,
+      { limit, page }
+    );
+    return { contacts, total, limit, page };
   } catch (error) {
     console.log(error.message);
   }

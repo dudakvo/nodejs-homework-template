@@ -3,7 +3,7 @@ const Contacts = require("../model/contacts");
 const getContacts = async (req, res, next) => {
   try {
     const userID = req.user.id;
-    const contactsArray = await Contacts.listContacts(userID);
+    const contactsArray = await Contacts.listContacts(userID, req.query);
     return res.json({
       status: "success",
       code: 200,

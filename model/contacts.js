@@ -1,8 +1,11 @@
 const Contact = require("./schemas/contact");
 
 const listContacts = async (userID, query) => {
-  const { limit = 5, page = 1 } = query;
+  const { limit = 5, page = 1, favorite = null } = query;
   const optionSearch = { owner: userID };
+  if (favorite !== null) {
+    optionSearch.favorite = favorite;
+  }
   try {
     console.log(`list contacts user ID = ${userID}`);
     const { docs: contacts, totalDocs: total } = await Contact.paginate(

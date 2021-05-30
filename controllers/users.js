@@ -77,4 +77,27 @@ const current = async (req, res, next) => {
   }
 };
 
-module.exports = { reg, login, logout, current };
+const userUpdate = async (req, res, next) => {
+  if (req.params.id !== req.user.id) {
+    return res.status(HttpCode.BAD_REQUEST).json({
+      stsus: "Access denied",
+      code: HttpCode.BAD_REQUEST,
+      data: { message: "access denied" },
+    });
+  }
+  try {
+    const { _id, email, subscription } = await Users.subscriptionUpdate(
+      req.params.id,
+      req.body.subscription
+    );
+    return res.status(HttpCode.OK).json({
+      stsus: "success",
+      code: HttpCode.OK,
+      data: { _id, email, subscription },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { reg, login, logout, current, userUpdate };

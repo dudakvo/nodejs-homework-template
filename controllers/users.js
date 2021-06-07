@@ -3,7 +3,7 @@ require("dotenv").config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const Users = require("../model/users");
-const { HttpCode } = require("../helper/constants");
+const { HttpCode } = require("../helpers/constants");
 
 const reg = async (req, res, next) => {
   try {
@@ -16,11 +16,11 @@ const reg = async (req, res, next) => {
       });
     }
 
-    const { id, email, subscription } = await Users.create(req.body);
+    const { id, email, subscription, avatarURL } = await Users.create(req.body);
     return res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
-      data: { id, email, subscription },
+      data: { id, email, subscription, avatarURL },
     });
   } catch (error) {
     next(error);
@@ -100,4 +100,12 @@ const userUpdate = async (req, res, next) => {
   }
 };
 
-module.exports = { reg, login, logout, current, userUpdate };
+const avatar = async (req, res, next) => {
+  try {
+    return res.json({});
+  } catch (error) {
+    next(error.message);
+  }
+};
+
+module.exports = { reg, login, logout, current, userUpdate, avatar };

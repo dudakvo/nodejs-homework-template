@@ -1,7 +1,7 @@
 const express = require("express");
 const ctrl = require("../../../controllers/contacts");
 const router = express.Router();
-const guard = require("../../../helper/guards");
+const guard = require("../../../helpers/guards");
 
 const {
   validateCreateContact,

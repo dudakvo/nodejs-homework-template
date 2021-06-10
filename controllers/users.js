@@ -1,9 +1,11 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const UploadAvatar = require("../services/upload-avatars-local");
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS;
 
 const Users = require("../model/users");
-const { HttpCode } = require("../helper/constants");
+const { HttpCode } = require("../helpers/constants");
 
 const reg = async (req, res, next) => {
   try {
@@ -16,11 +18,11 @@ const reg = async (req, res, next) => {
       });
     }
 
-    const { id, email, subscription } = await Users.create(req.body);
+    const { id, email, subscription, avatarURL } = await Users.create(req.body);
     return res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
-      data: { id, email, subscription },
+      data: { id, email, subscription, avatarURL },
     });
   } catch (error) {
     next(error);
@@ -100,4 +102,25 @@ const userUpdate = async (req, res, next) => {
   }
 };
 
-module.exports = { reg, login, logout, current, userUpdate };
+const avatar = async (req, res, next) => {
+  try {
+    const id = req.user.id;
+    const uploads = new UploadAvatar(AVATAR_OF_USERS);
+    const avatarURL = await uploads.saveToStatic({
+      idUser: id,
+      pathFile: req.file.path,
+      oldFile: req.user.avatarURL,
+      name: req.file.filename,
+    });
+    await Users.updateAvatar(id, avatarURL);
+    return res.json({
+      status: "success",
+      code: HttpCode.OK,
+      data: { avatarURL },
+    });
+  } catch (error) {
+    next(error.message);
+  }
+};
+
+module.exports = { reg, login, logout, current, userUpdate, avatar };

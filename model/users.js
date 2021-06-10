@@ -10,7 +10,6 @@ const create = async (option) => {
 };
 
 const updateToken = async (id, token) => {
-  console.log(`id= ${id} token=${token}`);
   await User.updateOne({ _id: id }, { token });
 };
 
@@ -26,10 +25,15 @@ const subscriptionUpdate = async (id, subscription) => {
   }
 };
 
+const updateAvatar = async (id, avatarURL) => {
+  return await User.updateOne({ _id: id }, { avatarURL });
+};
+
 module.exports = {
   findByID,
   findByEmail,
   create,
   updateToken,
   subscriptionUpdate,
+  updateAvatar,
 };

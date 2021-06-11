@@ -123,4 +123,17 @@ const avatar = async (req, res, next) => {
   }
 };
 
-module.exports = { reg, login, logout, current, userUpdate, avatar };
+const verifyUser = () => {};
+
+const resendVerifyToken = () => {};
+
+module.exports = {
+  reg,
+  login,
+  logout,
+  current,
+  userUpdate,
+  avatar,
+  verifyUser,
+  resendVerifyToken,
+};

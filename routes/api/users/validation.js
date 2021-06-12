@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const { HttpCode } = require("../../../helpers/constants");
 
 const schemaCreateUser = Joi.object({
   password: Joi.string().alphanum().min(6).max(30).required(),
@@ -18,13 +19,19 @@ const schemaUpdateUser = Joi.object({
     .required(),
 });
 
+const schemaResendUserValidationEmail = Joi.object({
+  email: Joi.string().email({ multiple: false }).required(),
+});
+
 const validate = async (schema, body, next) => {
   try {
     await schema.validateAsync(body);
     next();
   } catch (error) {
-    console.log(error.message);
-    next({ status: 400, message: `Filed: ${error.message.replace(/"/g, "")}` });
+    next({
+      status: HttpCode.BAD_REQUEST,
+      message: `Filed: ${error.message.replace(/"/g, "")}`,
+    });
   }
 };
 
@@ -34,4 +41,11 @@ const validateCreateUser = (req, _res, next) =>
 const validateUpdateUser = (req, _res, next) =>
   validate(schemaUpdateUser, req.body, next);
 
-module.exports = { validateCreateUser, validateUpdateUser };
+const validateResendUserValidationEmail = async (req, _res, next) =>
+  validate(schemaResendUserValidationEmail, req.body, next);
+
+module.exports = {
+  validateCreateUser,
+  validateUpdateUser,
+  validateResendUserValidationEmail,
+};

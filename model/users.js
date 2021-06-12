@@ -25,9 +25,14 @@ const subscriptionUpdate = async (id, subscription) => {
   }
 };
 
-const updateAvatar = async (id, avatarURL) => {
-  return await User.updateOne({ _id: id }, { avatarURL });
-};
+const updateAvatar = async (id, avatarURL) =>
+  await User.updateOne({ _id: id }, { avatarURL });
+
+const getUserByVerifyToken = async (token) =>
+  await User.findOne({ verifyToken: token });
+
+const updateVerifyToken = async (id, verify, token) =>
+  await User.updateOne({ _id: id }, { verify, verifyToken: token });
 
 module.exports = {
   findByID,
@@ -36,4 +41,6 @@ module.exports = {
   updateToken,
   subscriptionUpdate,
   updateAvatar,
+  getUserByVerifyToken,
+  updateVerifyToken,
 };

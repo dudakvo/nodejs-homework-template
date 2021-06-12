@@ -3,7 +3,11 @@ const ctrl = require("../../../controllers/users");
 const upload = require("../../../helpers/upload");
 const router = express.Router();
 const guard = require("../../../helpers/guards");
-const { validateCreateUser, validateUpdateUser } = require("./validation.js");
+const {
+  validateCreateUser,
+  validateUpdateUser,
+  validateResendUserValidationEmail,
+} = require("./validation.js");
 
 router.post("/register", validateCreateUser, ctrl.reg);
 router.post("/login", ctrl.login);
@@ -13,7 +17,11 @@ router.get("/current", guard, ctrl.current);
 router.patch("/avatars", [guard, upload.single("avatar")], ctrl.avatar);
 router.patch("/:id", guard, validateUpdateUser, ctrl.userUpdate);
 
-router.get("/verify/:token", guard, ctrl.verifyUser);
-router.post("/verify", guard, ctrl.resendVerifyToken);
+router.post(
+  "/verify",
+  validateResendUserValidationEmail,
+  ctrl.resendEmailVerify
+);
+router.get("/verify/:token", ctrl.verifyUser);
 
 module.exports = router;
